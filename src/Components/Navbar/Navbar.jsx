@@ -1,8 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router';
+
+const list = <>
+    <li><Link to='/'>Home</Link></li>
+    <li><Link to='/all-jobs'>All Jobs</Link></li>
+    <li><Link to='/add-job'>Add a Job</Link></li>
+    <li><Link to='/my-accepted-tasks'>My Accepted Tasks</Link></li>
+</>
 
 const Navbar = () => {
     return (
-        <div className="navbar bg-base-100 shadow-sm">
+        <div className="navbar bg-base-100 shadow-sm px-16">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -11,36 +19,19 @@ const Navbar = () => {
                     <ul
                         tabIndex="-1"
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                        <li><a>Item 1</a></li>
-                        <li>
-                            <a>Parent</a>
-                            <ul className="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
-                            </ul>
-                        </li>
-                        <li><a>Item 3</a></li>
+                        {list}
                     </ul>
                 </div>
-                <a className="btn btn-ghost text-xl">daisyUI</a>
+                <Link to='/' className="btn btn-ghost text-xl">Freelance MarketPlace</Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
-                    <li><a>Item 1</a></li>
-                    <li>
-                        <details>
-                            <summary>Parent</summary>
-                            <ul className="p-2">
-                                <li><a>Submenu 1</a></li>
-                                <li><a>Submenu 2</a></li>
-                            </ul>
-                        </details>
-                    </li>
-                    <li><a>Item 3</a></li>
+                    {list}
                 </ul>
             </div>
-            <div className="navbar-end">
-                <a className="btn">Button</a>
+            <div className="navbar-end gap-2">
+                <Link to='/auth/login' className="btn btn-outline">Login</Link>
+                <Link to='/auth/register' className="btn btn-primary btn-outline">Register</Link>
             </div>
         </div>
     );
