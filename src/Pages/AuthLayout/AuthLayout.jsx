@@ -3,7 +3,15 @@ import { Outlet } from "react-router";
 
 export default function AuthLayout() {
     return (
-        <div className="min-h-screen w-full bg-gray-50 mx-auto">
+        <div className="min-h-screen w-full sm:grid grid-cols-2 bg-blue-500 mx-auto">
+            <div className="text-white space-y-4 flex-col justify-center items-center hidden sm:flex">
+                <h1 className="text-6xl">
+                    Grow With Us
+                </h1>
+                <p className="text-3xl">
+                    We are glad to see you here
+                </p>
+            </div>
             <Outlet></Outlet>
         </div>
     );
