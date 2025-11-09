@@ -26,8 +26,7 @@ const Navbar = () => {
                     </ul>
                 </div>
                 <Link to='/' className="text-xl font-bold">Freelance
-                    <span className="block sm:hidden"></span>
-                    MarketPlace</Link>
+                    <span className="block sm:hidden"></span> MarketPlace</Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
