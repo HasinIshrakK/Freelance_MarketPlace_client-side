@@ -5,6 +5,7 @@ const fetchJob = fetch('http://localhost:3000/jobs').then(res => res.json());
 
 const Home = () => {
     const jobs = use(fetchJob);
+    const sortedJobs = jobs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     return (
         <div className=''>
@@ -12,7 +13,7 @@ const Home = () => {
 
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-10'>
                 {
-                    jobs.map(job => <Jobs key={job._id} job={job}></Jobs>
+                    sortedJobs.slice(0, 6).map(job => <Jobs key={job._id} job={job}></Jobs>
                     )
                 }
             </div>
