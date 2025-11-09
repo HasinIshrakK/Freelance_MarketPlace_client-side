@@ -3,7 +3,7 @@ import { Outlet } from "react-router";
 
 export default function AuthLayout() {
     return (
-        <div className="min-h-screen w-full sm:grid grid-cols-2 bg-blue-500 mx-auto">
+        <div className="min-h-screen w-full sm:grid grid-cols-2 bg-linear-to-br from-blue-400 to-blue-700 mx-auto">
             <div className="text-white space-y-4 flex-col justify-center items-center hidden sm:flex">
                 <h1 className="text-6xl">
                     Grow With Us

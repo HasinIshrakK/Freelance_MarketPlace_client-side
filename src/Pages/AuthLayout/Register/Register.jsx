@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 const Register = () => {
   return (
-    <div className="hero bg-base-200 min-h-screen">
+    <div className="hero bg-base-100 min-h-screen">
       <div className="hero-content flex-col">
         <div className="text-center">
           <h1 className="text-5xl font-bold">Register now!</h1>

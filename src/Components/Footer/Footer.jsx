@@ -2,8 +2,8 @@ import React from 'react';
 
 const Footer = () => {
     return (
-        <footer className='px-6 md:px-10 bg-neutral pb-6'>
-            <div className="footer sm:footer-horizontal justify-between text-neutral-content p-10 pb-0">
+        <footer className='px-0 sm:px-10 bg-neutral pb-6'>
+            <div className="footer grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 justify-between text-neutral-content p-10 pb-0">
                 <nav>
                     <h6 className="footer-title">Services</h6>
                     <a className="link link-hover">Hire</a>
@@ -50,7 +50,7 @@ const Footer = () => {
                     </div>
                 </nav>
             </div>
-            <footer className="footer flex sm:block items-start sm:items-center footer-horizontal footer-center text-primary-content text-left sm:text-center p-6 pt-14">
+            <div className="footer flex sm:block items-start sm:items-center footer-horizontal footer-center text-primary-content text-left sm:text-center p-10 pt-14">
                 <aside>
                     <svg
                         width="50"
@@ -70,7 +70,7 @@ const Footer = () => {
                     </p>
                     <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
                 </aside>
-            </footer>
+            </div>
         </footer>
     );
 };
