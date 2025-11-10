@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router';
 import { ThemeContext } from '../../Contexts/Theme';
+import { AuthContext } from '../../Contexts/AuthProvider';
 
 const list = <>
     <li><Link to='/'>Home</Link></li>
@@ -12,6 +13,8 @@ const list = <>
 
 const Navbar = () => {
     const { themeToggle } = useContext(ThemeContext);
+    const { user, logout } = useContext(AuthContext);
+
     return (
         <div className="navbar bg-base-100 shadow-sm px-6 sm:px-20 sticky top-0 z-10">
             <div className="navbar-start">
@@ -42,17 +45,24 @@ const Navbar = () => {
                     <svg aria-label="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></g></svg>
 
                 </label>
-                <div className='hidden sm:block space-x-2'>
-                    <Link to='/auth/login' className="btn btn-outline">Login</Link>
-                    <Link to='/auth/register' className="btn btn-primary btn-outline">Register</Link>
-                </div>
-                <div className="dropdown dropdown-hover dropdown-end sm:hidden">
-                    <div tabIndex={0} role="button" className="btn btn-primary btn-outline m-1">Login/<br></br>Register</div>
-                    <ul tabIndex="-1" className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-                        <Link to='/auth/login' className="btn">Login</Link>
-                        <Link to='/auth/register' className="btn">Register</Link>
-                    </ul>
-                </div>
+                {
+                    user ?
+                        <button onClick={logout} className='btn'>SignOut</button>
+                        :
+                        <>
+                            <div className='hidden sm:block space-x-2'>
+                                <Link to='/auth/login' className="btn btn-outline">Login</Link>
+                                <Link to='/auth/register' className="btn btn-primary btn-outline">Register</Link>
+                            </div>
+                            <div className="dropdown dropdown-hover dropdown-end sm:hidden">
+                                <div tabIndex={0} role="button" className="btn btn-primary btn-outline m-1">Login/<br></br>Register</div>
+                                <ul tabIndex="-1" className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                                    <Link to='/auth/login' className="btn">Login</Link>
+                                    <Link to='/auth/register' className="btn">Register</Link>
+                                </ul>
+                            </div>
+                        </>
+                }
             </div>
         </div>
     );
