@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState } from 'react';
 import auth from '../firebase/firebase.config';
-import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
+import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 
 export const AuthContext = createContext();
 
@@ -8,16 +8,15 @@ const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState();
 
-    const emailSignUp = (email, password) => {
-        return createUserWithEmailAndPassword(auth, email, password).then(result => {
-            const newUser = result.user;
-            setUser(newUser);
-            alert('signed up')
-        })
-            .catch((error) => {
-                console.log(error);
-            }
-            );
+    const emailSignUp = async (email, password, name, photo) => {
+        const result = await createUserWithEmailAndPassword(auth, email, password);
+
+        await updateProfile(result.user, {
+            displayName: name,
+            photoURL: photo
+        });
+
+        return result.user;
     };
 
     const emailSignIn = (email, password) => {

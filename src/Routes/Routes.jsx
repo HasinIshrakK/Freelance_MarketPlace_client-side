@@ -8,6 +8,10 @@ import AcceptedJobs from '../Pages/AcceptedJobs/AcceptedJobs';
 import Login from '../Pages/AuthLayout/Login/Login';
 import Register from '../Pages/AuthLayout/Register/Register';
 import AuthLayout from '../Pages/AuthLayout/AuthLayout';
+import UpdateJob from '../Pages/UpdateJob/UpdateJob';
+import DeleteJob from '../Pages/DeleteJob/DeleteJob';
+import JobDetails from '../Pages/JobDetails/JobDetails';
+import MyJobs from '../Pages/MyJobs/MyJobs';
 
 const router = createBrowserRouter([
     {
@@ -16,7 +20,16 @@ const router = createBrowserRouter([
         children: [
             { index: true, Component: Home },
             { path: "/all-jobs", Component: AllJobs },
+            { path: "/all-jobs/:id", Component: JobDetails },
+
             { path: "/add-job", Component: AddJobs },
+
+            { path: "/update-job/:id", Component: UpdateJob },
+
+            { path: "/delete-job/:id", Component: DeleteJob },
+
+            { path: "/my-added-jobs", Component: MyJobs },
+
             { path: "/my-accepted-tasks", Component: AcceptedJobs },
             {
                 path: "/auth",

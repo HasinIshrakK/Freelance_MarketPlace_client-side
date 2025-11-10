@@ -34,10 +34,12 @@ const Register = () => {
     ) {
       alert("Please fix the password requirements before submitting.");
       return;
-    }
+    };
 
+    const user = await emailSignUp(email, password, name, photo);
+    setUser(user);
+    console.log(user.displayName);
 
-    await emailSignUp(email, password);
     navigate('/')
   };
 

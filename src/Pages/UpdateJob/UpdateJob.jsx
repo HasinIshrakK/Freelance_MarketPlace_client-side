@@ -1,10 +1,6 @@
-import React, { useContext, useState } from 'react';
-import { AuthContext } from '../../Contexts/AuthProvider';
+import React, { useState } from 'react';
 
-const AddJobs = () => {
-
-    const { user } = useContext(AuthContext);
-
+const UpdateJob = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
 
     const categories = [
@@ -22,32 +18,30 @@ const AddJobs = () => {
         };
 
         const title = e.target.title.value;
-        const postedBy = e.target.name.value;
         const category = selectedCategory;
         const summary = e.target.summary.value;
         const coverImage = e.target.photo.value;
-        const userEmail = e.target.email.value;
-        const createdAt = new Date().toISOString();
-        const job = { title, postedBy, category, summary, coverImage, userEmail, createdAt };
+        const job = { title, category, summary, coverImage };
+        console.log(job);
 
-        fetch('http://localhost:3000/jobs', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json',
-            },
-            body: JSON.stringify(job)
-        });
+        // fetch('http://localhost:3000/jobs', {
+        //     method: 'PUT',
+        //     headers: {
+        //         'content-type': 'application/json',
+        //     },
+        //     body: JSON.stringify(job)
+        // });
 
-        e.target.reset();
-        setSelectedCategory("Select Category");
+        // e.target.reset();
+        // setSelectedCategory("Select Category");
     };
 
     return (
         <div className='min-h-screen flex flex-col md:flex-row md:gap-x-20 justify-center items-center'>
             <div className="text-center">
-                <h1 className="text-5xl font-bold">Post now!</h1>
+                <h1 className="text-5xl font-bold">Update you post!</h1>
                 <p className="py-6">
-                    Let's hire the most skilled person
+                    Let's make the best deal
                 </p>
             </div>
             <form onSubmit={handleOnSubmit}>
@@ -56,9 +50,6 @@ const AddJobs = () => {
 
                     <label className="label">Title</label>
                     <input required type="text" name='title' className="input" placeholder="My awesome page" />
-
-                    <label className="label">Name</label>
-                    <input readOnly type="text" name='name' className="input" value={user?.displayName} />
 
                     <label className="label">Category</label>
                     <div className="dropdown dropdown-end w-full font-normal">
@@ -87,14 +78,11 @@ const AddJobs = () => {
                     <label className="label">Cover Image</label>
                     <input required type="text" name='photo' className="input" placeholder="Your cover image's URL" />
 
-                    <label className="label">Email</label>
-                    <input readOnly type="email" name='email' className="input" value={user?.email} />
-
-                    <button className="btn btn-neutral mt-4">Post</button>
+                    <button className="btn btn-neutral mt-4">Update</button>
                 </fieldset>
             </form>
         </div>
     );
 };
 
-export default AddJobs;
+export default UpdateJob;

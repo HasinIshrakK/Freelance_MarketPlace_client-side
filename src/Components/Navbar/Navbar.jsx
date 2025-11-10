@@ -28,7 +28,7 @@ const Navbar = () => {
                         {list}
                     </ul>
                 </div>
-                <Link to='/' className="text-xl font-bold">Freelance
+                <Link to='/' className="text-lg sm:text-xl font-bold">Freelance
                     <span className="block sm:hidden"></span> MarketPlace</Link>
             </div>
             <div className="navbar-center hidden lg:flex">
@@ -46,8 +46,25 @@ const Navbar = () => {
 
                 </label>
                 {
-                    user ?
-                        <button onClick={logout} className='btn'>SignOut</button>
+                    user ? <>
+                        <div className='hidden sm:flex items-center gap-2'>
+                            <div className="tooltip tooltip-bottom" data-tip={user.displayName}>
+                                <img className='h-10 rounded-full' src={`${user.photoURL ? user.photoURL : '/user.png'}`} alt="User" />
+                            </div>
+                            <button onClick={logout} className='btn'>SignOut</button>
+                        </div>
+
+                        <div className="dropdown dropdown-hover dropdown-end sm:hidden">
+                            <div tabIndex={0} role="button" className="m-1">
+                                <div className="tooltip tooltip-left" data-tip={user.displayName}>
+                                    <img className='h-10 rounded-full' src={`${user.photoURL ? user.photoURL : '/user.png'}`} alt="User" />
+                                </div>
+                            </div>
+                            <ul tabIndex="-1" className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                                <button onClick={logout} className='btn'>SignOut</button>
+                            </ul>
+                        </div>
+                    </>
                         :
                         <>
                             <div className='hidden sm:block space-x-2'>
