@@ -3,17 +3,21 @@ import { Link } from 'react-router';
 import { ThemeContext } from '../../Contexts/Theme';
 import { AuthContext } from '../../Contexts/AuthProvider';
 
-const list = <>
-    <li><Link to='/'>Home</Link></li>
-    <li><Link to='/all-jobs'>All Jobs</Link></li>
-    <li><Link to='/add-job'>Add a Job</Link></li>
-    <li><Link to='/my-accepted-tasks'>My Accepted Tasks</Link></li>
-</>
 
 
 const Navbar = () => {
     const { themeToggle } = useContext(ThemeContext);
     const { user, logout } = useContext(AuthContext);
+    const list = <>
+        <li><Link to='/'>Home</Link></li>
+        <li><Link to='/all-jobs'>All Jobs</Link></li>
+        <li><Link to='/add-job'>Add a Job</Link></li>
+        {
+            user && <>
+                <li><Link to='/my-accepted-tasks'>My Accepted Tasks</Link></li>
+                <li><Link to='/my-added-jobs'>My Added Jobs</Link></li></>
+        }
+    </>
 
     return (
         <div className="navbar bg-base-100 shadow-sm px-6 sm:px-20 sticky top-0 z-10">

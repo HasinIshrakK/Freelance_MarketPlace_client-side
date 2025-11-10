@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from '../../Contexts/Theme';
+import { Link } from 'react-router';
 
 const Jobs = ({ job }) => {
 
@@ -8,13 +9,13 @@ const Jobs = ({ job }) => {
     return (
         <div className={`shadow-lg rounded-xl overflow-hidden hover:border-4 hover:shadow-2xl transition-shadow duration-300 
       ${themeMode ? 'bg-white border-blue-400' : 'bg-gray-800 border-blue-600'}`}>
-            {/* {job.coverImage && (
+            {job.coverImage && (
                 <img
                     src={job.coverImage}
                     alt={job.title}
                     className="w-full h-40 object-cover"
                 />
-            )} */}
+            )}
 
             <div className="p-4 flex flex-col justify-between h-full">
                 <h2 className={`text-xl font-semibold mb-1 
@@ -35,9 +36,11 @@ const Jobs = ({ job }) => {
                     {job.summary}
                 </p>
 
-                <button className="mt-auto bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200">
-                    View Details
-                </button>
+                <Link to={`/all-jobs/${job._id}`}>
+                    <button className="mt-auto bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200">
+                        View Details
+                    </button>
+                </Link>
             </div>
         </div>
     );
