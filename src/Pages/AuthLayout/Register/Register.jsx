@@ -4,6 +4,7 @@ import { AuthContext } from "../../../Contexts/AuthProvider";
 import { Link } from 'react-router';
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa";
+import Swal from 'sweetalert2';
 
 const Register = () => {
 
@@ -32,13 +33,39 @@ const Register = () => {
       password.toUpperCase() === password ||
       password !== password2
     ) {
-      alert("Please fix the password requirements before submitting.");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please fix the password requirements before submitting!",
+        theme: 'auto'
+      });
       return;
     };
 
-    const user = await emailSignUp(email, password, name, photo);
+    const user = await emailSignUp(email, password, name, photo)
+      .then((resultUser) => {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Successfully Registered",
+          showConfirmButton: false,
+          timer: 1500,
+          theme: 'auto'
+        });
+        return resultUser;
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: err.message || err,
+          theme: 'auto'
+        });
+        return null;
+      });
+
+    if (!user) return;
     setUser(user);
-    console.log(user.displayName);
 
     navigate('/')
   };

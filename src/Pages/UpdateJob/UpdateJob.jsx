@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Swal from 'sweetalert2';
 
 const UpdateJob = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -14,26 +15,50 @@ const UpdateJob = () => {
         e.preventDefault();
 
         if (selectedCategory === "Select Category") {
-            return alert('Please select a category')
+            return Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Please select a category!",
+                theme: 'auto'
+            });
         };
 
         const title = e.target.title.value;
         const category = selectedCategory;
         const summary = e.target.summary.value;
         const coverImage = e.target.photo.value;
+
         const job = { title, category, summary, coverImage };
         console.log(job);
 
         // fetch('http://localhost:3000/jobs', {
-        //     method: 'PUT',
+        //     method: 'PATCH',
         //     headers: {
         //         'content-type': 'application/json',
         //     },
         //     body: JSON.stringify(job)
-        // });
+        // }).then(res => res.json())
+        //     .then(() => {
+        //         Swal.fire({
+        //             position: "top-end",
+        //             icon: "success",
+        //             title: "Job has been updated successfully",
+        //             showConfirmButton: false,
+        //             timer: 1500,
+        //             theme: 'auto'
+        //         });
+        //     })
+        //     .catch((err) => {
+        //         Swal.fire({
+        //             icon: "error",
+        //             title: "Oops...",
+        //             text: err.message || err,
+        //             theme: 'auto'
+        //         });
+        //     });
 
-        // e.target.reset();
-        // setSelectedCategory("Select Category");
+        e.target.reset();
+        setSelectedCategory("Select Category");
     };
 
     return (

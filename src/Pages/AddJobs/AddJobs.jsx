@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../Contexts/AuthProvider';
+import Swal from 'sweetalert2';
 
 const AddJobs = () => {
 
@@ -18,7 +19,12 @@ const AddJobs = () => {
         e.preventDefault();
 
         if (selectedCategory === "Select Category") {
-            return alert('Please select a category')
+            return Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Please select a category!",
+                theme: 'auto'
+            });
         };
 
         const title = e.target.title.value;
@@ -36,7 +42,25 @@ const AddJobs = () => {
                 'content-type': 'application/json',
             },
             body: JSON.stringify(job)
-        });
+        }).then(res => res.json())
+            .then(() => {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Job has been posted successfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    theme: 'auto'
+                });
+            })
+            .catch((err) => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: err.message || err,
+                    theme: 'auto'
+                });
+            });;
 
         e.target.reset();
         setSelectedCategory("Select Category");

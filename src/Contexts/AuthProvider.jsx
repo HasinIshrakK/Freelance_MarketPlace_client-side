@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from 'react';
 import auth from '../firebase/firebase.config';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
+import Swal from 'sweetalert2';
 
 export const AuthContext = createContext();
 
@@ -23,8 +24,15 @@ const AuthProvider = ({ children }) => {
         return signInWithEmailAndPassword(auth, email, password)
             .then((result) => {
                 const _user = result.user;
-                setUser(_user)
-                alert('signed in')
+                setUser(_user);
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Successfully Logged In",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    theme: 'auto'
+                });
             })
             .catch((error) => {
                 console.log(error);
@@ -37,7 +45,14 @@ const AuthProvider = ({ children }) => {
         return signInWithPopup(auth, provider).then(result => {
             const user = result.user;
             setUser(user);
-            alert('signed in')
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Successfully Logged In",
+                showConfirmButton: false,
+                timer: 1500,
+                theme: 'auto'
+            });
         })
             .catch((error) => {
                 console.log(error);
@@ -54,7 +69,14 @@ const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         await signOut(auth);
-        alert('signed out')
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Successfully Logged Out",
+            showConfirmButton: false,
+            timer: 1500,
+            theme: 'auto'
+        });
     }
 
     const value = {
