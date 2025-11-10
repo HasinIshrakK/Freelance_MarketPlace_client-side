@@ -1,21 +1,31 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { AuthContext } from "../../../Contexts/AuthProvider.jsx";
 import { Link } from 'react-router';
+import { FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash } from "react-icons/fa";
 
 const Login = () => {
 
-  const { googleSignIn } = useContext(AuthContext);
+  const { emailSignIn, googleSignIn } = useContext(AuthContext);
+
+  const [type, setType] = useState(true);
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
 
-  }
+    emailSignIn(email, password);
+  };
 
   const google = (e) => {
     e.preventDefault();
     googleSignIn();
+  };
+
+  const typeToggle = (e) => {
+    e.preventDefault();
+    setType(!type);
   };
 
   return (
@@ -32,9 +42,18 @@ const Login = () => {
             <form onSubmit={handleOnSubmit}>
               <fieldset className="fieldset">
                 <label className="label">Email</label>
-                <input type="email" name='email' className="input" placeholder="Your Email" />
+                <input required type="email" name='email' className="input" placeholder="Your Email" />
                 <label className="label">Password</label>
-                <input type="password" name='password' className="input" placeholder="Password" />
+                <div className='relative'>
+                  <input required type={`${type ? 'password' : 'text'}`} name='password' className="input" placeholder="Password" />
+                  <button className="absolute inset-y-0 right-6 text-xl text-gray-500" onClick={typeToggle}>
+                    {type ?
+                      <FaRegEye></FaRegEye>
+                      :
+                      <FaRegEyeSlash></FaRegEyeSlash>
+                    }
+                  </button>
+                </div>
                 <div><a className="link link-hover">Forgot password?</a></div>
                 <button className="btn btn-neutral mt-4">Login</button>
               </fieldset>

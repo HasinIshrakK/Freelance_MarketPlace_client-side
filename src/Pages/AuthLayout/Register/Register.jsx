@@ -1,12 +1,24 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
+import { useNavigate } from "react-router";
 import { AuthContext } from "../../../Contexts/AuthProvider";
 import { Link } from 'react-router';
+import { FaRegEye } from "react-icons/fa";
+import { FaRegEyeSlash } from "react-icons/fa";
 
 const Register = () => {
 
   const { setUser, emailSignUp, googleSignIn } = useContext(AuthContext);
 
-  const handleOnSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const [type, setType] = useState(true);
+  const [type2, setType2] = useState(true);
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [focus, setFocus] = useState(false);
+  const [focus2, setFocus2] = useState(false);
+
+  const handleOnSubmit = async (e) => {
     e.preventDefault();
     const name = e.target.name.value;
     const photo = e.target.photo.value;
@@ -14,12 +26,35 @@ const Register = () => {
     const password = e.target.password.value;
     const password2 = e.target.password2.value;
 
-    emailSignUp(email, password);
+    if (
+      password.length < 6 ||
+      password.toLowerCase() === password ||
+      password.toUpperCase() === password ||
+      password !== password2
+    ) {
+      alert("Please fix the password requirements before submitting.");
+      return;
+    }
+
+
+    await emailSignUp(email, password);
+    navigate('/')
   };
 
-  const google = (e) => {
+  const google = async (e) => {
     e.preventDefault();
-    googleSignIn();
+    await googleSignIn();
+    navigate('/');
+  };
+
+  const typeToggle = (e) => {
+    e.preventDefault();
+    setType(!type);
+  };
+
+  const typeToggle2 = (e) => {
+    e.preventDefault();
+    setType2(!type2);
   };
 
   return (
@@ -36,15 +71,72 @@ const Register = () => {
             <form onSubmit={handleOnSubmit}>
               <fieldset className="fieldset">
                 <label className="label">Name</label>
-                <input type="text" name='name' className="input" placeholder="Your Name" />
+                <input required type="text" name='name' className="input" placeholder="Your Name" />
                 <label className="label">Photo-URL</label>
-                <input type="text" name='photo' className="input" placeholder="Your Photo's URL" />
+                <input required type="text" name='photo' className="input" placeholder="Your Photo's URL" />
                 <label className="label">Email</label>
-                <input type="email" name='email' className="input" placeholder="Your Email" />
+                <input required type="email" name='email' className="input" placeholder="Your Email" />
                 <label className="label">Password</label>
-                <input type="password" name='password' className="input" placeholder="Password" />
+                <div className='relative'>
+                  <input required type={`${type ? 'password' : 'text'}`} name='password' className="input" value={password}
+                    onChange={(e) => setPassword(e.target.value)} onFocus={() => {
+                      setFocus(true)
+                      setFocus2(false)
+                    }} />
+                  <button className="absolute inset-y-0 right-6 text-xl text-gray-500" onClick={typeToggle}>
+                    {type ?
+                      <FaRegEye></FaRegEye>
+                      :
+                      <FaRegEyeSlash></FaRegEyeSlash>
+                    }
+                  </button>
+                </div>
+
+                {
+                  focus && <div className='font-semibold'>
+                    Password
+                    <p
+                      className={`${password.toLowerCase() === password ? 'text-red-500' : 'text-green-600'}`}
+                    >
+                      must include at least one uppercase letter
+                    </p>
+                    <p
+                      className={`${password.toUpperCase() === password ? 'text-red-500' : 'text-green-600'}`}
+                    >
+                      must include at least one lowercase letter
+                    </p>
+                    <p
+                      className={`${password.length < 6 ? 'text-red-500' : 'text-green-600'}`}
+                    >
+                      must be at least 6 characters long
+                    </p>
+                  </div>
+                }
+
                 <label className="label">Confirm Password</label>
-                <input type="password" name='password2' className="input" placeholder="Confirm Password" />
+                <div className='relative'>
+                  <input required type={`${type2 ? 'password' : 'text'}`} name='password2' className="input" value={password2}
+                    onChange={(e) => setPassword2(e.target.value)} onFocus={() => {
+                      setFocus2(true)
+                      setFocus(false)
+                    }} />
+                  <button className="absolute inset-y-0 right-6 text-xl text-gray-500" onClick={typeToggle2}>
+                    {type2 ?
+                      <FaRegEye></FaRegEye>
+                      :
+                      <FaRegEyeSlash></FaRegEyeSlash>
+                    }
+                  </button>
+                </div>
+                {
+                  focus2 && <div className='font-semibold'>
+                    <p
+                      className={`${password2 !== password ? 'text-red-500' : 'text-green-600'}`}
+                    >
+                      Confirming password must be the same as password
+                    </p>
+                  </div>
+                }
                 <button className="btn btn-neutral mt-4">Register</button>
               </fieldset>
             </form>
@@ -58,7 +150,7 @@ const Register = () => {
           </div>
           <div>
             <p className='p-6 pt-4 text-xs'>
-              By joining, you agree to our <a className='link link-hover'>Terms of Service</a> and to occasionally receive emails from us.
+              By registering, you agree to our <a className='link link-hover'>Terms of Service</a> and to occasionally receive emails from us.
               Please read our <a className='link link-hover'>Privacy Policy</a> to learn how we use your personal data.
             </p>
           </div>
