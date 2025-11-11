@@ -1,10 +1,13 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from '../../Contexts/Theme';
 import { Link } from 'react-router';
+import Loader from '../Loader';
 
 const Jobs = ({ job }) => {
 
     const { themeMode } = useContext(ThemeContext);
+
+    if (!job) return <Loader></Loader>
 
     return (
         <div className={`shadow-lg rounded-xl overflow-hidden hover:border-4 hover:shadow-2xl min-h-[350px] transition-shadow duration-300 

@@ -46,7 +46,7 @@ const MyJobs = () => {
 
                             <div className="card-actions justify-end mt-3">
                                 <Link to={`/all-jobs/${job._id}`}>
-                                    <button className="btn btn-neutral">
+                                    <button className="px-5 py-2 bg-black hover:bg-gray-950 text-white rounded-md">
                                         View Details
                                     </button>
                                 </Link>
