@@ -13,11 +13,13 @@ import DeleteJob from '../Pages/DeleteJob/DeleteJob';
 import JobDetails from '../Pages/JobDetails/JobDetails';
 import MyJobs from '../Pages/MyJobs/MyJobs';
 import PrivateRoute from './PrivateRoute';
+import Error from '../Components/Error';
 
 const router = createBrowserRouter([
     {
         path: "/",
         Component: App,
+        errorElement: <Error></Error>,
         children: [
             { index: true, Component: Home },
             { path: "/all-jobs", Component: AllJobs },
@@ -40,6 +42,10 @@ const router = createBrowserRouter([
                     { path: "/auth/register", Component: Register },
                 ],
             },
+            {
+                path: '/*',
+                element: <Error></Error>
+            }
         ],
     },
 ]);
