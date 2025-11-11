@@ -47,7 +47,7 @@ const AddJobs = () => {
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: "Job has been posted successfully",
+                    title: "Job posted successfully",
                     showConfirmButton: false,
                     timer: 1500,
                     theme: 'auto'

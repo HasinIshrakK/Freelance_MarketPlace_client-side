@@ -2,12 +2,17 @@ import React, { createContext, useEffect, useState } from 'react';
 import auth from '../firebase/firebase.config';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile } from 'firebase/auth';
 import Swal from 'sweetalert2';
+import { useLocation, useNavigate } from 'react-router';
 
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
 
-    const [user, setUser] = useState();
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const emailSignUp = async (email, password, name, photo) => {
         const result = await createUserWithEmailAndPassword(auth, email, password);
@@ -33,6 +38,7 @@ const AuthProvider = ({ children }) => {
                     timer: 1500,
                     theme: 'auto'
                 });
+                navigate(location.state || '/');
             })
             .catch((error) => {
                 console.log(error);
@@ -53,6 +59,7 @@ const AuthProvider = ({ children }) => {
                 timer: 1500,
                 theme: 'auto'
             });
+            navigate(location.state || '/');
         })
             .catch((error) => {
                 console.log(error);
@@ -63,6 +70,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
+            setLoading(false);
         });
         return unsubscribe;
     }, []);
@@ -86,6 +94,7 @@ const AuthProvider = ({ children }) => {
         logout,
         emailSignUp,
         emailSignIn,
+        loading,
     };
 
     return (
