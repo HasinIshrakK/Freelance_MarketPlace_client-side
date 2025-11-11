@@ -7,7 +7,7 @@ const Jobs = ({ job }) => {
     const { themeMode } = useContext(ThemeContext);
 
     return (
-        <div className={`shadow-lg rounded-xl overflow-hidden hover:border-4 hover:shadow-2xl transition-shadow duration-300 
+        <div className={`shadow-lg rounded-xl overflow-hidden hover:border-4 hover:shadow-2xl min-h-[350px] transition-shadow duration-300 
       ${themeMode ? 'bg-white border-blue-400' : 'bg-gray-800 border-blue-600'}`}>
             {job.coverImage && (
                 <img
@@ -17,7 +17,7 @@ const Jobs = ({ job }) => {
                 />
             )}
 
-            <div className="p-4 flex flex-col justify-between h-full">
+            <div className="p-4 flex flex-col justify-between">
                 <h2 className={`text-xl font-semibold mb-1 
           ${themeMode ? 'text-gray-900' : 'text-white'}`}>
                     {job.title}
@@ -37,7 +37,7 @@ const Jobs = ({ job }) => {
                 </p>
 
                 <Link to={`/all-jobs/${job._id}`}>
-                    <button className="mt-auto bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200">
+                    <button className="mt-auto w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-200">
                         View Details
                     </button>
                 </Link>

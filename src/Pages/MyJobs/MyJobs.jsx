@@ -1,11 +1,18 @@
-import React, { use } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router';
-
-const fetchJob = fetch('http://localhost:3000/jobs').then(res => res.json());
+import { AuthContext } from '../../Contexts/AuthProvider'
 
 const MyJobs = () => {
+    const { user } = useContext(AuthContext);
+    const [jobs, setJobs] = useState([]);
 
-    const jobs = use(fetchJob);
+    useEffect(() => {
+        if (!user?.email) return;
+
+        fetch(`http://localhost:3000/my-jobs?email=${user.email}`)
+            .then(res => res.json())
+            .then(data => setJobs(data));
+    }, [user]);
 
     return (
 

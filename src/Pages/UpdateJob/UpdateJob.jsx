@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
 const UpdateJob = () => {
-    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [job, setJob] = useState(null);
 
     const categories = [
         'Web Development',
@@ -10,6 +11,29 @@ const UpdateJob = () => {
         'Digital Marketing',
         'AI & ML',
     ];
+
+    const jobId = window.location.pathname.split("/").pop();
+
+    useEffect(() => {
+        const fetchJob = async () => {
+            try {
+                const res = await fetch(`http://localhost:3000/jobs/${jobId}`);
+                const data = await res.json();
+
+                setJob(data);
+                setSelectedCategory(data?.category)
+            } catch (err) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: err.message || err,
+                    theme: 'auto'
+                });
+            }
+        };
+
+        fetchJob();
+    }, [jobId]);
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
@@ -28,37 +52,37 @@ const UpdateJob = () => {
         const summary = e.target.summary.value;
         const coverImage = e.target.photo.value;
 
-        const job = { title, category, summary, coverImage };
-        console.log(job);
+        const updatedJob = { title, category, summary, coverImage };
 
-        // fetch('http://localhost:3000/jobs', {
-        //     method: 'PATCH',
-        //     headers: {
-        //         'content-type': 'application/json',
-        //     },
-        //     body: JSON.stringify(job)
-        // }).then(res => res.json())
-        //     .then(() => {
-        //         Swal.fire({
-        //             position: "top-end",
-        //             icon: "success",
-        //             title: "Job has been updated successfully",
-        //             showConfirmButton: false,
-        //             timer: 1500,
-        //             theme: 'auto'
-        //         });
-        //     })
-        //     .catch((err) => {
-        //         Swal.fire({
-        //             icon: "error",
-        //             title: "Oops...",
-        //             text: err.message || err,
-        //             theme: 'auto'
-        //         });
-        //     });
+        fetch(`http://localhost:3000/jobs/${jobId}`, {
+            method: 'PATCH',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(updatedJob)
+        }).then(res => res.json())
+            .then(() => {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Job updated successfully",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    theme: 'auto'
+                });
+            })
+            .catch((err) => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: err.message || err,
+                    theme: 'auto'
+                });
+            });
 
         e.target.reset();
         setSelectedCategory("Select Category");
+        setJob(null);
     };
 
     return (
@@ -74,7 +98,7 @@ const UpdateJob = () => {
                     <legend className="fieldset-legend">Job details</legend>
 
                     <label className="label">Title</label>
-                    <input required type="text" name='title' className="input" placeholder="My awesome page" />
+                    <input required type="text" name='title' className="input" defaultValue={job?.title} placeholder='Job post title' />
 
                     <label className="label">Category</label>
                     <div className="dropdown dropdown-end w-full font-normal">
@@ -98,10 +122,10 @@ const UpdateJob = () => {
 
 
                     <label className="label">Summary</label>
-                    <textarea aria-required type="text" name='summary' className="textarea" placeholder="Job summary" />
+                    <textarea aria-required type="text" name='summary' className="textarea" defaultValue={job?.summary} placeholder="Job summary" />
 
                     <label className="label">Cover Image</label>
-                    <input required type="text" name='photo' className="input" placeholder="Your cover image's URL" />
+                    <input required type="text" name='photo' className="input" defaultValue={job?.coverImage} placeholder="Your cover image's URL" />
 
                     <button className="btn btn-neutral mt-4">Update</button>
                 </fieldset>

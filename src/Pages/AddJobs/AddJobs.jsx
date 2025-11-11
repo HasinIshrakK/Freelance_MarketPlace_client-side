@@ -6,7 +6,7 @@ const AddJobs = () => {
 
     const { user } = useContext(AuthContext);
 
-    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState("Select Category");
 
     const categories = [
         'Web Development',
