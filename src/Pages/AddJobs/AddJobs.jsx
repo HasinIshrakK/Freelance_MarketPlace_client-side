@@ -79,7 +79,7 @@ const AddJobs = () => {
                     <legend className="fieldset-legend">Job details</legend>
 
                     <label className="label">Title</label>
-                    <input required type="text" name='title' className="input" placeholder="My awesome page" />
+                    <input required type="text" name='title' className="input" placeholder="Awesome Job" />
 
                     <label className="label">Name</label>
                     <input readOnly type="text" name='name' className="input" value={user?.displayName} />

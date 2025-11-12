@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../Contexts/AuthProvider";
+import Loader from "../../Components/Loader";
 
 export default function JobDetails() {
+    const { user } = useContext(AuthContext);
     const [job, setJob] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -24,18 +27,55 @@ export default function JobDetails() {
         fetchJob();
     }, [jobId]);
 
-    if (loading) return <div className="p-6 text-center text-lg">Loading job details...</div>;
+    if (loading) return <div className="p-6 text-center text-lg"><Loader></Loader></div>;
     if (error) return <div className="p-6 text-red-500 text-center">{error}</div>;
     if (!job) return <div className="p-6 text-center text-gray-500">Job not found</div>;
 
 
     const handleAccept = () => {
-        Swal.fire({
-            title: "Job Accepted!",
-            icon: "success",
-            draggable: true,
+
+        if (user.email === job.userEmail) return Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "You Cannot Accept Jobs Posted By You!",
             theme: 'auto'
         });
+
+        const title = job.title;
+        const postedBy = job.postedBy;
+        const category = job.category;
+        const summary = job.summary;
+        const coverImage = job.photo;
+        const createdAt = job.createdAt;
+        const email = user.email;
+        const id = jobId;
+        const accepted = { title, postedBy, category, summary, coverImage, email, createdAt, id };
+
+        fetch('http://localhost:3000/accepted-jobs', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(accepted)
+        }).then(res => res.json())
+            .then(() => {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Job Accepted!",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    theme: 'auto'
+                });
+            })
+            .catch((err) => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: err.message || err,
+                    theme: 'auto'
+                });
+            });;
     };
 
     const handleContact = () => {
@@ -99,7 +139,7 @@ export default function JobDetails() {
                     onClick={handleContact}
                     className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
                 >
-                    Contact Poster
+                    Contact Recruiter
                 </button>
             </div>
         </div>
