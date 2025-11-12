@@ -44,24 +44,22 @@ const MyJobs = () => {
                                 Posted on: {new Date(job.createdAt).toLocaleDateString()}
                             </p>
 
-                            <div className="card-actions justify-end mt-3">
+                            <div className="card-actions justify-start sm:justify-end mt-3">
                                 <Link to={`/all-jobs/${job._id}`}>
-                                    <button className="px-5 py-2 bg-black hover:bg-gray-950 text-white rounded-md">
+                                    <button className="w-40 btn px-5 py-2 border-red-900 bg-black hover:bg-gray-950 text-white rounded-md">
                                         View Details
                                     </button>
                                 </Link>
-                                <Link to={`/delete-job/${job._id}`}>
-                                    <button
-                                        className="px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md"
-                                    >
-                                        Delete Job
-                                    </button>
-                                </Link>
                                 <Link to={`/update-job/${job._id}`}>
-                                    <button
-                                        className="px-5 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-md"
+                                    <button className="w-40 btn px-5 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-md"
                                     >
                                         Edit Job
+                                    </button>
+                                </Link>
+                                <Link to={`/delete-job/${job._id}`}>
+                                    <button className="w-40 btn px-5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md"
+                                    >
+                                        Delete Job
                                     </button>
                                 </Link>
                             </div>
