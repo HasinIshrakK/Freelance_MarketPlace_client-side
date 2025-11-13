@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../Contexts/AuthProvider";
 import Loader from "../../Components/Loader";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 export default function JobDetails() {
     const { user } = useContext(AuthContext);
@@ -9,13 +10,14 @@ export default function JobDetails() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const axiosSecure = useAxiosSecure();
+
     const jobId = window.location.pathname.split("/").pop();
 
     useEffect(() => {
-        const fetchJob = async () => {
+        const jobPromise = async () => {
             try {
-                const res = await fetch(`http://localhost:3000/jobs/${jobId}`);
-                const data = await res.json();
+                const { data } = await axiosSecure.get(`/jobs/${jobId}`);
                 setJob(data);
             } catch (err) {
                 setError(err.message);
@@ -24,7 +26,7 @@ export default function JobDetails() {
             }
         };
 
-        fetchJob();
+        jobPromise();
     }, [jobId]);
 
     if (loading) return <div className="p-6 text-center text-lg"><Loader></Loader></div>;
@@ -51,13 +53,7 @@ export default function JobDetails() {
         const id = jobId;
         const accepted = { title, postedBy, category, summary, coverImage, email, createdAt, id };
 
-        fetch('http://localhost:3000/accepted-jobs', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json',
-            },
-            body: JSON.stringify(accepted)
-        }).then(res => res.json())
+        axiosSecure.post('/accepted-jobs', accepted)
             .then(() => {
                 Swal.fire({
                     position: "top-end",

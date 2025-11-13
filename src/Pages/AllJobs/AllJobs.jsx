@@ -1,11 +1,15 @@
 import React, { use, useState } from 'react';
 import Jobs from '../../Components/Jobs/Jobs';
+import useAxios from '../../hooks/useAxios';
 
-const fetchJob = fetch('http://localhost:3000/jobs').then(res => res.json());
+const axiosSecure = useAxios();
+
+const jobsPromise = axiosSecure.get('/jobs');
 
 const AllJobs = () => {
 
-    const jobs = use(fetchJob);
+    const jobsData = use(jobsPromise);
+    const jobs = jobsData.data;
     const sortedJobsA = [...jobs].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     const sortedJobsD = [...jobs].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
 

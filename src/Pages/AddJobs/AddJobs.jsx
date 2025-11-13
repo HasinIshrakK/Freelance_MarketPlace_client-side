@@ -1,12 +1,15 @@
 import React, { useContext, useState } from 'react';
 import { AuthContext } from '../../Contexts/AuthProvider';
 import Swal from 'sweetalert2';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const AddJobs = () => {
 
     const { user } = useContext(AuthContext);
 
     const [selectedCategory, setSelectedCategory] = useState("Select Category");
+
+    const axiosSecure = useAxiosSecure();
 
     const categories = [
         'Web Development',
@@ -36,13 +39,7 @@ const AddJobs = () => {
         const createdAt = new Date().toISOString();
         const job = { title, postedBy, category, summary, coverImage, userEmail, createdAt };
 
-        fetch('http://localhost:3000/jobs', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json',
-            },
-            body: JSON.stringify(job)
-        }).then(res => res.json())
+        axiosSecure.post('/jobs', job)
             .then(() => {
                 Swal.fire({
                     position: "top-end",

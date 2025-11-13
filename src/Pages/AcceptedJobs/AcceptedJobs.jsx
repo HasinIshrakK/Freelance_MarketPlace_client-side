@@ -3,17 +3,19 @@ import { AuthContext } from '../../Contexts/AuthProvider'
 import Swal from 'sweetalert2';
 import Loader from '../../Components/Loader';
 import NoJobsFound from '../../Components/NoJobsFound';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const AcceptedJobs = () => {
     const { user } = useContext(AuthContext);
     const [jobs, setJobs] = useState([]);
 
+    const axiosSecure = useAxiosSecure();
+
     useEffect(() => {
         if (!user?.email) return;
 
-        fetch(`http://localhost:3000/my-accepted-jobs?email=${user.email}`)
-            .then(res => res.json())
-            .then(data => setJobs(data));
+        axiosSecure.get(`/my-accepted-jobs?email=${user.email}`)
+            .then(data => setJobs(data.data));
     }, [user]);
 
     const handleDone = (id) => {
@@ -27,9 +29,7 @@ const AcceptedJobs = () => {
             confirmButtonText: "Yes, it is done!"
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/accepted-jobs/${id}`, {
-                    method: 'DELETE',
-                }).then(res => res.json())
+                axiosSecure.delete(`/accepted-jobs/${id}`)
                     .then(() => {
                         setJobs(prevJobs => prevJobs.filter(job => job._id !== id));
                         Swal.fire({
@@ -52,9 +52,7 @@ const AcceptedJobs = () => {
     };
 
     const handleCancel = (id) => {
-        fetch(`http://localhost:3000/accepted-jobs/${id}`, {
-            method: 'DELETE',
-        }).then(res => res.json())
+        axiosSecure.delete(`/accepted-jobs/${id}`)
             .then(() => {
                 setJobs(prevJobs => prevJobs.filter(job => job._id !== id));
                 Swal.fire({

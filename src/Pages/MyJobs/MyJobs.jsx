@@ -2,17 +2,20 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { AuthContext } from '../../Contexts/AuthProvider'
 import NoJobsFound from '../../Components/NoJobsFound';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const MyJobs = () => {
     const { user } = useContext(AuthContext);
     const [jobs, setJobs] = useState([]);
 
+    const axiosSecure = useAxiosSecure();
+
     useEffect(() => {
         if (!user?.email) return;
 
-        fetch(`http://localhost:3000/my-jobs?email=${user.email}`)
-            .then(res => res.json())
-            .then(data => setJobs(data));
+        axiosSecure.get(`/my-jobs?email=${user.email}`)
+            .then(data => setJobs(data.data));
+
     }, [user]);
 
     return (<>

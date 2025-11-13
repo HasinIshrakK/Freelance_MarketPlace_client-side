@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
+import { useNavigate } from 'react-router';
 
 const UpdateJob = () => {
     const [selectedCategory, setSelectedCategory] = useState("");
     const [job, setJob] = useState(null);
+
+    const navigate = useNavigate();
+
+    const axiosSecure = useAxiosSecure();
 
     const categories = [
         'Web Development',
@@ -15,13 +21,11 @@ const UpdateJob = () => {
     const jobId = window.location.pathname.split("/").pop();
 
     useEffect(() => {
-        const fetchJob = async () => {
+        const jobPromise = async () => {
             try {
-                const res = await fetch(`http://localhost:3000/jobs/${jobId}`);
-                const data = await res.json();
-
+                const { data } = await axiosSecure.get(`/jobs/${jobId}`);
                 setJob(data);
-                setSelectedCategory(data?.category)
+                setSelectedCategory(data?.category);
             } catch (err) {
                 Swal.fire({
                     icon: "error",
@@ -32,7 +36,7 @@ const UpdateJob = () => {
             }
         };
 
-        fetchJob();
+        jobPromise();
     }, [jobId]);
 
     const handleOnSubmit = (e) => {
@@ -54,13 +58,7 @@ const UpdateJob = () => {
 
         const updatedJob = { title, category, summary, coverImage };
 
-        fetch(`http://localhost:3000/jobs/${jobId}`, {
-            method: 'PATCH',
-            headers: {
-                'content-type': 'application/json',
-            },
-            body: JSON.stringify(updatedJob)
-        }).then(res => res.json())
+        axiosSecure.patch(`/jobs/${jobId}`, updatedJob)
             .then(() => {
                 Swal.fire({
                     position: "top-end",
@@ -70,6 +68,7 @@ const UpdateJob = () => {
                     timer: 1500,
                     theme: 'auto'
                 });
+                navigate('/my-added-jobs')
             })
             .catch((err) => {
                 Swal.fire({

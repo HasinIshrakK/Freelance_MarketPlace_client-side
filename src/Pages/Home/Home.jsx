@@ -3,6 +3,7 @@ import Jobs from '../../Components/Jobs/Jobs';
 import { motion } from "framer-motion";
 import SearchBar from '../../Components/SearchBar';
 import { Link } from 'react-router';
+import useAxios from '../../hooks/useAxios';
 
 const fadeUp = {
     hidden: { opacity: 0, y: 40 },
@@ -18,10 +19,14 @@ const categories = [
     { name: "Engineering", img: "/engineering.jpg" }
 ];
 
-const fetchJob = fetch('http://localhost:3000/jobs').then(res => res.json());
+const axiosSecure = useAxios();
+
+const jobsPromise = axiosSecure.get('/jobs');
 
 const Home = () => {
-    const jobs = use(fetchJob);
+
+    const jobsData = use(jobsPromise);
+    const jobs = jobsData.data;
     const sortedJobs = jobs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     return (

@@ -3,21 +3,22 @@ import Loader from '../../Components/Loader';
 import { ThemeContext } from '../../Contexts/Theme';
 import Swal from 'sweetalert2';
 import { Link, useNavigate } from 'react-router';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 const DeleteJob = () => {
     const { themeMode } = useContext(ThemeContext)
     const [job, setJob] = useState(null);
+
+    const axiosSecure = useAxiosSecure();
 
     const navigate = useNavigate();
 
     const jobId = window.location.pathname.split("/").pop();
 
     useEffect(() => {
-        const fetchJob = async () => {
+        const jobPromise = async () => {
             try {
-                const res = await fetch(`http://localhost:3000/jobs/${jobId}`);
-                const data = await res.json();
-
+                const { data } = await axiosSecure.get(`/jobs/${jobId}`);
                 setJob(data);
             } catch (err) {
                 Swal.fire({
@@ -29,7 +30,7 @@ const DeleteJob = () => {
             }
         };
 
-        fetchJob();
+        jobPromise();
     }, [jobId]);
 
     const del = () => {
@@ -51,9 +52,7 @@ const DeleteJob = () => {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch(`http://localhost:3000/jobs/${jobId}`, {
-                    method: 'DELETE',
-                }).then(res => res.json())
+                axiosSecure.delete(`/jobs/${jobId}`)
                     .then(() => {
                         Swal.fire({
                             position: "top-end",
