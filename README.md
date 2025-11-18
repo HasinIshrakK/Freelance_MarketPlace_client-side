@@ -3,6 +3,52 @@
 **Live Site:** [https://freelance-marketplace-demo.web.app/]
 
 ---
+## 📌 Project Overview
+
+A responsive MERN-based freelance marketplace frontend that allows users to browse jobs, apply, manage profiles, and interact with the platform through an intuitive UI.
+
+## 🛠️ Main Technologies
+
+React.js
+
+React Router
+
+Firebase Authentication
+
+Axios
+
+Tailwind CSS
+
+## ✨ Key Features
+
+User login & registration (Firebase)
+
+Private routes with token-based auth
+
+Job listing with filters
+
+Job apply functionality
+
+User dashboard
+
+Axios secure instance with interceptor
+
+Responsive UI with Tailwind
+
+Integrated API calls to backend server
+
+## 📦 Dependencies
+
+react
+
+react-router-dom
+
+firebase
+
+axios
+
+tailwindcss
+
 
 ## Features
 
@@ -21,3 +67,14 @@
 13. Navbar dynamically updates based on login status  
 14. Image preview for job posts  
 15. Smooth UI animations using Framer Motion or similar libraries
+
+
+## Installation
+
+```bash
+git clone https://github.com/HasinIshrakK/Freelance_MarketPlace_client-side
+cd Freelance_MarketPlace_client-side
+npm install
+npm start
+
+```
